@@ -1,0 +1,16 @@
+{
+  "name": "EDUNOJECH",
+  "short_name": "EDUNOJECH",
+  "description": "NERDC-aligned lesson notes, lesson plans, and scheme of work generator for Nigerian teachers.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#EFE9D8",
+  "theme_color": "#1F3D2E",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
