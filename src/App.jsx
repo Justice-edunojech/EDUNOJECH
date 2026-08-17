@@ -33,7 +33,7 @@ function todayISO() {
 async function callClaude(systemPrompt, userPrompt) {
   // Calls our own backend function (functions/api/generate.js), which holds
   // the real Anthropic API key server-side. The browser never sees the key.
-  const response = await fetch("/api/generate", {
+  fetch("/.netlify/functions/generate", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
