@@ -20,6 +20,8 @@ export async function handler(event) {
 
   const userText = body.messages?.[0]?.content || "";
 
+  let data;
+try {
   const geminiResponse = await fetch(
     `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent?key=${apiKey}`,
     {
@@ -33,11 +35,14 @@ export async function handler(event) {
     }
   );
 
-  const data = await geminiResponse.json();
+  data = await geminiResponse.json();
 
   if (data.error) {
     return { statusCode: geminiResponse.status, body: JSON.stringify({ error: { message: data.error.message } }) };
   }
+} catch (err) {
+  return { statusCode: 502, body: JSON.stringify({ error: { message: `Upstream fetch failed: ${err.message}` } }) };
+}
 
   const candidate = data.candidates?.[0];
   const text = candidate?.content?.parts?.map((p) => p.text).join("") || "";
