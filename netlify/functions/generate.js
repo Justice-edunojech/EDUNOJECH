@@ -21,7 +21,7 @@ export async function handler(event) {
   const userText = body.messages?.[0]?.content || "";
 
   const geminiResponse = await fetch(
-    ``https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent?key=${apiKey}`,
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent?key=${apiKey}`,
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -39,7 +39,18 @@ export async function handler(event) {
     return { statusCode: geminiResponse.status, body: JSON.stringify({ error: { message: data.error.message } }) };
   }
 
-  const text = data.candidates?.[0]?.content?.parts?.map((p) => p.text).join("") || "";
+  const candidate = data.candidates?.[0];
+  const text = candidate?.content?.parts?.map((p) => p.text).join("") || "";
+
+  if (!text) {
+    const reason = candidate?.finishReason || data.promptFeedback?.blockReason || "unknown";
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        error: { message: `Gemini returned no text (reason: ${reason}). Raw: ${JSON.stringify(data).slice(0, 400)}` },
+      }),
+    };
+  }
 
   return {
     statusCode: 200,
